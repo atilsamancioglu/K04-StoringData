@@ -5,16 +5,19 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import kotlinx.android.synthetic.main.activity_main.*
+import com.atilsamancioglu.storingdata.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     lateinit var sharedPreferences : SharedPreferences
     var ageFromPreferences : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         //SharedPrefences Initialize
         sharedPreferences = this.getSharedPreferences("com.atilsamancioglu.storingdata",
@@ -23,9 +26,9 @@ class MainActivity : AppCompatActivity() {
         ageFromPreferences = sharedPreferences.getInt("age",-1)
 
         if (ageFromPreferences == -1) {
-            textView.text = "Your Age: "
+            binding.textView.text = "Your Age: "
         } else {
-            textView.text = "Your Age: $ageFromPreferences"
+            binding.textView.text = "Your Age: $ageFromPreferences"
         }
 
 
@@ -33,10 +36,10 @@ class MainActivity : AppCompatActivity() {
 
     fun save(view : View){
 
-        val myAge = editText.text.toString().toIntOrNull()
+        val myAge = binding.editText.text.toString().toIntOrNull()
 
         if (myAge != null) {
-            textView.text = "Your Age: " + myAge
+            binding.textView.text = "Your Age: " + myAge
             sharedPreferences.edit().putInt("age",myAge).apply()
         }
 
@@ -49,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         if (ageFromPreferences != -1) {
             sharedPreferences.edit().remove("age").apply()
-            textView.text = "Your Age: "
+            binding.textView.text = "Your Age: "
         }
 
     }
